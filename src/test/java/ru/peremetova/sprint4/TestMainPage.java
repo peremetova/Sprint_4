@@ -3,6 +3,8 @@ package ru.peremetova.sprint4;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -11,9 +13,29 @@ import ru.peremetova.sprint4.pages.MainPageSamokat;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+@RunWith(Parameterized.class)
 public class TestMainPage {
 
     private WebDriver driver;
+    private int index;
+
+    public TestMainPage(int index) {
+        this.index = index;
+    }
+
+    @Parameterized.Parameters(name = "Кликаем на вопрос номер {0}")
+    public static Object[][] getCredentials() {
+        return new Object[][]{
+                {0},
+                {1},
+                {2},
+                {3},
+                {4},
+                {5},
+                {6},
+                {7},
+        };
+    }
 
     @Before
     public void connectToServer() {
@@ -31,11 +53,11 @@ public class TestMainPage {
         driver.get("https://qa-scooter.praktikum-services.ru/");
     }
 
-
     @Test
     public void testMainPageQuestions() {
         MainPageSamokat mainPageSamokat = new MainPageSamokat(driver);
-        mainPageSamokat.clickAllQuestions();
+        mainPageSamokat.clickCookieButton();
+        mainPageSamokat.clickQuestion(index);
     }
 
     @After

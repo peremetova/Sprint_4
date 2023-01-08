@@ -17,25 +17,21 @@ import java.util.concurrent.TimeUnit;
 @RunWith(Parameterized.class)
 public class TestOrderForm {
 
+    private final String name;
+    private final String surname;
+    private final String address;
+    private final String phone;
     private WebDriver driver;
 
-    private String name;
-    private String surname;
-    private String address;
-    private String phone;
-
-    public TestOrderForm(String name,
-                         String surname,
-                         String address,
-                         String phone) {
+    public TestOrderForm(String name, String surname, String address, String phone) {
         this.name = name;
         this.surname = surname;
         this.address = address;
         this.phone = phone;
     }
 
-    @Parameterized.Parameters
-    public static Object[][] getCredentials(){
+    @Parameterized.Parameters(name = "Тестовые данные: {0}, {1}, {2}, {3}")
+    public static Object[][] getCredentials() {
         return new Object[][]{
                 {"Иван", "Иванов", "ул. Рылеева, д. 19", "89156350000"},
                 {"Евгения", "Трубакова", "ул. Горького, д. 101", "80000000000"},
@@ -59,26 +55,19 @@ public class TestOrderForm {
     }
 
     @Test
-    public void testScooterOrder() {
+    public void testScooterOrderTopButtonClick() {
         MainPageSamokat mainPageSamokat = new MainPageSamokat(driver);
         mainPageSamokat.clickTopOrderButton();
-
         OrderPageSamokat orderPageSamokat = new OrderPageSamokat(driver);
-        orderPageSamokat.waitForOrderForm();
-        orderPageSamokat.fillName(name);
-        orderPageSamokat.fillSurname(surname);
-        orderPageSamokat.fillAddress(address);
-        orderPageSamokat.fillMetro();
-        orderPageSamokat.fillTelephone(phone);
+        orderPageSamokat.processOrder(name, surname, address, phone);
+    }
 
-        orderPageSamokat.clickNextButton();
-        orderPageSamokat.waitForRentalForm();
-        orderPageSamokat.fillDate();
-        orderPageSamokat.fillRental();
-        orderPageSamokat.clickOrderButton();
-        orderPageSamokat.waitForConfirmForm();
-        orderPageSamokat.clickConfirmYesButton();
-        orderPageSamokat.waitForSuccess();
+    @Test
+    public void testScooterOrderBottomButtonClick() {
+        MainPageSamokat mainPageSamokat = new MainPageSamokat(driver);
+        mainPageSamokat.clickBottomOrderButton();
+        OrderPageSamokat orderPageSamokat = new OrderPageSamokat(driver);
+        orderPageSamokat.processOrder(name, surname, address, phone);
     }
 
     @After

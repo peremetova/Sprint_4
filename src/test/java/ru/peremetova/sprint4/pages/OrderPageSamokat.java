@@ -1,20 +1,13 @@
 package ru.peremetova.sprint4.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
-import static org.junit.Assert.assertTrue;
 
 // Класс оформления заказа
 public class OrderPageSamokat {
@@ -117,6 +110,15 @@ public class OrderPageSamokat {
                 .until(driver -> driver.findElement(rentalFormTitle).isDisplayed());
     }
 
+    public void fillOrderForm(String name, String surname, String address, String phone) {
+        waitForOrderForm();
+        fillName(name);
+        fillSurname(surname);
+        fillAddress(address);
+        fillMetro();
+        fillTelephone(phone);
+    }
+
     public void waitForOrderForm() {
         new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))
                 .until(driver -> driver.findElement(orderFormTitle).isDisplayed());
@@ -130,5 +132,21 @@ public class OrderPageSamokat {
     public void waitForSuccess() {
         new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))
                 .until(driver -> driver.findElement(successFormTitle).isDisplayed());
+    }
+
+    public void fillRentalForm() {
+        waitForRentalForm();
+        fillRental();
+        fillDate();
+    }
+
+    public void processOrder(String name, String surname, String address, String phone) {
+        fillOrderForm(name, surname, address, phone);
+        clickNextButton();
+        fillRentalForm();
+        clickOrderButton();
+        waitForConfirmForm();
+        clickConfirmYesButton();
+        waitForSuccess();
     }
 }

@@ -11,8 +11,6 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-
 // Класс главной страницы
 public class MainPageSamokat {
 
@@ -54,10 +52,13 @@ public class MainPageSamokat {
         new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))
                 .until(ExpectedConditions.visibilityOf(question));
         question.click();
+    }
+
+    public boolean isAnswerDisplayed(int index) {
+        List<WebElement> questions = driver.findElements(questionItem);
+        WebElement question = questions.get(index);
         WebElement answer = question.findElement(answerItem);
-        System.out.println("Ответ: " + answer.getText());
-        System.out.println("Is Displayed: " + answer.isDisplayed());
-        assertTrue("Ответ на вопрос: \"" + question.getText() + "\" не виден после клика на текст вопроса.", answer.isDisplayed());
+        return answer.isDisplayed();
     }
 
     public void clickTopOrderButton() {

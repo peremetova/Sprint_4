@@ -1,11 +1,13 @@
 package ru.peremetova.sprint4;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.peremetova.sprint4.pages.MainPageSamokat;
@@ -42,8 +44,8 @@ public class TestMainPage {
         // драйвер для браузера Chrome
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
-        //driver = new ChromeDriver(options);
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver(options);
+        //driver = new FirefoxDriver();
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
@@ -58,6 +60,8 @@ public class TestMainPage {
         MainPageSamokat mainPageSamokat = new MainPageSamokat(driver);
         mainPageSamokat.clickCookieButton();
         mainPageSamokat.clickQuestion(index);
+        boolean result = mainPageSamokat.isAnswerDisplayed(index);
+        Assert.assertTrue("Ответ на вопрос: \"" + index + "\" не виден после клика на текст вопроса.", result);
     }
 
     @After

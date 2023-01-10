@@ -149,4 +149,8 @@ public class OrderPageSamokat {
         clickConfirmYesButton();
         waitForSuccess();
     }
+
+    public String getSuccessFormTitle() {
+        return driver.findElement(successFormTitle).getText();
+    }
 }
